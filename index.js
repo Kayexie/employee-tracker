@@ -7,7 +7,7 @@ let employee_db = mysql.createConnection(
     {
         host: 'localhost',
         user: 'root',
-        password: 'Oneway0725@',
+        password: '',
         database: 'employee_db',
     },
     console.log(`Connect to the movie_db database.`)
