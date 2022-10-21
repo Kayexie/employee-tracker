@@ -48,13 +48,13 @@ inquirer
             viewAllEmployee();
         break;
         case 'Add an employee':
-            console.log("6")
+            addNewEmployee();
         break;
         case 'Update an employee role':
-            console.log("7")
+            UpdateEmployee();
         break;
         case 'Exist':
-            console.log("8")
+            console.log("Bye")
         break;
     }
  })};
@@ -66,7 +66,7 @@ function viewAllDepartment(){
         if(err) {
             console.log(err);
         } const departmentList = result.map(({id, name}) => ({name: name, value: id}))
-        console.log(departmentList)
+        console.table(departmentList)
         startApplication();
     })
   };    
@@ -107,9 +107,11 @@ ON employOne.role_id = rd.id;`
     employee_db.query(selectEmployee, (err, result)=>{
         if(err) {
             console.log(err);
-        } return console.table(result)
+        } 
+        console.table(result)
+        startApplication();
     })
-      startApplication();
+      
     }; 
 
 
@@ -162,7 +164,68 @@ async function addRole() {
     const addRoleTitleSalary = `INSERT INTO role set ?`;
     await employee_db.promise().query(addRoleTitleSalary, response);
     viewAllRoles();
-    }
+    };
+
+//add a new employee;
+async function addNewEmployee() {
+   const roleTitle = await employee_db.promise().query(`select title, id from role`)
+         const roleList = roleTitle[0].map(({id, title}) => ({name: title, value: id}))
+   const manager = await employee_db.promise().query(`select concat (first_name,' ', last_name) as manager_name, id from employee`)
+         const managerList = manager[0].map(({id, manager_name}) => ({name: manager_name, value: id}))
+   const response =  await inquirer
+   .prompt([
+    {
+      type:'input',
+      name: 'first_name',
+      message: `Please enter the new employee' first name.` 
+    },
+    {
+      type:'input',
+      name: 'last_name',
+      message: `Please enter the new employee' last name.` 
+    },
+    {
+      type:'list',
+      name: 'role_id',
+      message: `Please select the new employee's role.`,
+      choices: roleList
+    },
+    {
+      type:'list',
+      name: 'manager_id',
+      message: `Please select the new employee's manager.`,
+      choices: managerList
+    },
+   ])
+   const addNew = `INSERT INTO employee set ?`;
+   await employee_db.promise().query(addNew, response);
+   viewAllEmployee();
+}
 
 
-
+//update an employee role;
+async function UpdateEmployee() {
+    const employeeS = await employee_db.promise().query(`select id, concat (first_name,' ', last_name) as employee_name, id from employee`)
+          const theEmployee = employeeS[0].map(({id,employee_name})=>({name: employee_name, value:id}));
+    const roleTitle = await employee_db.promise().query(`select title, id from role`)
+          const roleList = roleTitle[0].map(({id, title}) => ({name: title, value: id}))  
+    const response = await inquirer
+    .prompt ([
+        {
+          type:'list',
+          name: 'id',
+          message: `Please select the employee that you want to update.`,
+          choices: theEmployee
+          },
+        {
+            type:'list',
+            name: 'role_id',
+            message: `Please select the employee's new role`,
+            choices: roleList
+          },
+    ])
+    const {id, role_id} = response;
+    const updateRole = `UPDATE employee SET role_id = '${role_id}' WHERE id = '${id}' ;`
+    await employee_db.promise().query(updateRole);
+    viewAllEmployee();
+}

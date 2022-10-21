@@ -25,4 +25,6 @@
 --     JOIN department ON department_id = department.id) as rd 
 -- ON employOne.role_id = rd.id;
 
-INSERT INTO department (name) VALUES ('Marketing');
+-- INSERT INTO department (name) VALUES ('Marketing');
+
+UPDATE employee SET role_id = '' WHERE id =  ;
