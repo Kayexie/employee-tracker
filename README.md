@@ -14,9 +14,9 @@
 ## Installation
    N/A
 ## Usage
-   ![Screenshot](./img/screenshot.png)
-   - URL of GitHub Repo: https://github.com/Kayexie/easy-note-taker
-   - URL of Application: https://infinite-woodland-89230.herokuapp.com/
+   ![Screenshot](./img/screen.png)
+   - URL of GitHub Repo: https://github.com/Kayexie/employee-tracker
+   - URL of Application: https://drive.google.com/file/d/1gLV_k3pzfWgOl_ryt2Rs9KYarFwKJ1FB/view?usp=sharing
 ## License
    N/A
 ## Contributingß
